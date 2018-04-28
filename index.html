@@ -345,7 +345,52 @@
       
         
           
-            
+            <h2 id="为什么使用路由守卫"><a href="#为什么使用路由守卫" class="headerlink" title="为什么使用路由守卫"></a>为什么使用路由守卫</h2><p>比如我们在首页要跳转到一些需要权限（比如完成登录）的页面时，我们就需要检验用户是否已经完成登录，没有登录则需要进行登录才能进入页面，为了再进入页面前高效的检验，我们就需要用到路由守卫进行拦截检验</p>
+<h2 id="在路由守卫进行拦截的逻辑主要有两种"><a href="#在路由守卫进行拦截的逻辑主要有两种" class="headerlink" title="在路由守卫进行拦截的逻辑主要有两种"></a>在路由守卫进行拦截的逻辑主要有两种</h2><p>第一种（分三层）：</p>
+<ul>
+<li>使用meta控制路由是否需要验证</li>
+<li>store中的token是否存在</li>
+<li>localstore中的token是否存在，存在则进行token登录，成功将获得新token存store中 </li>
+</ul>
+<p>第二种（分两层）：</p>
+<ul>
+<li>使用meta控制路由是否需要验证<ul>
+<li>是：进入下一层</li>
+<li>否：next()进入路由</li>
+</ul>
+</li>
+<li>localstore中的token是否存在<ul>
+<li>是：验证用户信息是否存在<ul>
+<li>是：next()进入路由</li>
+<li>否：使用token进行验证登录，后台数据返回成功与否<ul>
+<li>是：更新localstore中的token的值，并next()进入路由</li>
+<li>否：清除localstore中的token的值，清空store中的用户信息，弹出登录框，并next({path:’/index/home’})进入首页</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>否：跳出登录框并且 next({path: ‘/index/home’})进入首页</li>
+</ul>
+</li>
+</ul>
+<h2 id="路由守卫中的实例代码"><a href="#路由守卫中的实例代码" class="headerlink" title="路由守卫中的实例代码"></a>路由守卫中的实例代码</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">'../router'</span></span><br><span class="line"><span class="keyword">import</span> utils <span class="keyword">from</span> <span class="string">"./index.js"</span></span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">"../store"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//全局路由守卫</span></span><br><span class="line">router.beforeEach(<span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (to.matched.some(<span class="function"><span class="params">record</span> =&gt;</span> record.meta.requiresAuth)) &#123; <span class="comment">//meta验证</span></span><br><span class="line">        <span class="keyword">var</span> token = utils.getStore(<span class="string">"JWT_TOKEN"</span>)</span><br><span class="line">        <span class="keyword">var</span> s_token = store.getters.tokenGt.token</span><br><span class="line">        <span class="comment">// if(s_token === "")</span></span><br><span class="line">        <span class="comment">// &#123;</span></span><br><span class="line">          <span class="keyword">if</span>(!token)</span><br><span class="line">          &#123;</span><br><span class="line">            <span class="comment">// store.commit('SET_ISLOGIN',true)</span></span><br><span class="line">            $(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;     <span class="comment">// 弹出登录框</span></span><br><span class="line">              $(<span class="string">'#myModal1'</span>).modal(<span class="string">'show'</span>)</span><br><span class="line">            &#125;)</span><br><span class="line">            next(&#123; <span class="attr">path</span>: <span class="string">'/index/home'</span> &#125;) <span class="comment">// 回到首页</span></span><br><span class="line">          &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>(store.state.userInfo.nickname)&#123; <span class="comment">//不为空</span></span><br><span class="line">              next()                      <span class="comment">// 进入路由</span></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;   <span class="comment">//为空</span></span><br><span class="line">              <span class="built_in">console</span>.log(<span class="string">"路由守卫登陆验证~~~~~~~~~"</span>)</span><br><span class="line">              store.dispatch(<span class="string">'setUserMsgAct1'</span>)  </span><br><span class="line">              .then(<span class="function"><span class="params">rep</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">"路由守卫验证登录的："</span>)</span><br><span class="line">                <span class="built_in">console</span>.log(rep)</span><br><span class="line">                <span class="keyword">if</span>(rep.data.token)&#123;</span><br><span class="line">                  utils.setStore(<span class="string">"JWT_TOKEN"</span>,rep.data.token)</span><br><span class="line">                  next()                      <span class="comment">// 进入路由</span></span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                  <span class="keyword">if</span>(utils.getStore(<span class="string">"JWT_TOKEN"</span>))&#123;</span><br><span class="line">                    utils.removeStore(<span class="string">"JWT_TOKEN"</span>)</span><br><span class="line">                  &#125;</span><br><span class="line">                  <span class="keyword">var</span> data = &#123; <span class="attr">userInfo</span>: &#123;&#125;, <span class="attr">token</span>: <span class="string">''</span> &#125;</span><br><span class="line">                  store.commit(<span class="string">'SET_USERMSG'</span>,data)</span><br><span class="line">                  <span class="comment">// store.commit('SET_ISLOGIN',true)</span></span><br><span class="line">                  $(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                    $(<span class="string">'#myModal1'</span>).modal(<span class="string">'show'</span>)</span><br><span class="line">                  &#125;)</span><br><span class="line">                  next(&#123; <span class="attr">path</span>: <span class="string">'/index/home'</span> &#125;)  <span class="comment">// 回到首页</span></span><br><span class="line">                &#125;</span><br><span class="line">              &#125;)</span><br><span class="line">              .catch(<span class="function"><span class="params">err</span> =&gt;</span>&#123;</span><br><span class="line">                <span class="built_in">console</span>.log(err)</span><br><span class="line">              &#125;)</span><br><span class="line">            &#125;  </span><br><span class="line">          &#125;</span><br><span class="line">        <span class="comment">// &#125;</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        next() <span class="comment">// 确保一定要调用 next()</span></span><br><span class="line">      &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="在上述中，已经完成在路由守卫进行页面访问权限的验证，在进入需要权限的页面中（但用户没有权限）就会自动回到首页，并弹出登录框，下面提供自动弹出登录框的解决思路"><a href="#在上述中，已经完成在路由守卫进行页面访问权限的验证，在进入需要权限的页面中（但用户没有权限）就会自动回到首页，并弹出登录框，下面提供自动弹出登录框的解决思路" class="headerlink" title="在上述中，已经完成在路由守卫进行页面访问权限的验证，在进入需要权限的页面中（但用户没有权限）就会自动回到首页，并弹出登录框，下面提供自动弹出登录框的解决思路"></a>在上述中，已经完成在路由守卫进行页面访问权限的验证，在进入需要权限的页面中（但用户没有权限）就会自动回到首页，并弹出登录框，下面提供自动弹出登录框的解决思路</h2><ul>
+<li><p>第一种：</p>
+<p>  如上述代码，对登录框进行id绑定，在没有验证不通过需要返回首页的代码处，使用jquery操作dom调出登录框</p>
+</li>
+<li><p>第二种：（使用vue的数据驱动，将控制变量存在store中）</p>
+<ul>
+<li>在store中的state定义一个变量为false，通过mutations可以改变state的值</li>
+<li>定义computed属性的值为store的值</li>
+<li>使用watch监听computed的值</li>
+<li>路由拦截验证不通过时，通过mutations修改store的值为true</li>
+<li><p>首页的watch被触发，弹出弹框</p>
+<p>如上述注释代码，store.commit(‘SET_ISLOGIN’,true)修改store的值</p>
+</li>
+</ul>
+</li>
+</ul>
+
           
         
       
