@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="从零开始使用webpack构建vuejs开发项目," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概要很多人在vue的官网学习完之后，往往要开始构建第一个项目时不知道到从何下手，本文的目的就是带领你一步一步使用webpack工具构建出完整的vuejs开发项目的目录 前提 你已经了解vue的基础知识，尝试过使用vue-cli官方脚手架搭建项目。  安装要使用npm命令就需要先安装node.js, npm是随node.js安装的，所以需要先安装node.js，因为node.js安装比较容易就不在这">
+<meta name="keywords" content="从零开始使用webpack构建vuejs开发项目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从零开始使用webpack构建vuejs开发项目">
+<meta property="og:url" content="http://yoursite.com/2018/05/01/test5/index.html">
+<meta property="og:site_name" content="DIVINER BLOG">
+<meta property="og:description" content="概要很多人在vue的官网学习完之后，往往要开始构建第一个项目时不知道到从何下手，本文的目的就是带领你一步一步使用webpack工具构建出完整的vuejs开发项目的目录 前提 你已经了解vue的基础知识，尝试过使用vue-cli官方脚手架搭建项目。  安装要使用npm命令就需要先安装node.js, npm是随node.js安装的，所以需要先安装node.js，因为node.js安装比较容易就不在这">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/3746916-39344a0eff10fee3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:updated_time" content="2018-05-01T12:44:47.883Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从零开始使用webpack构建vuejs开发项目">
+<meta name="twitter:description" content="概要很多人在vue的官网学习完之后，往往要开始构建第一个项目时不知道到从何下手，本文的目的就是带领你一步一步使用webpack工具构建出完整的vuejs开发项目的目录 前提 你已经了解vue的基础知识，尝试过使用vue-cli官方脚手架搭建项目。  安装要使用npm命令就需要先安装node.js, npm是随node.js安装的，所以需要先安装node.js，因为node.js安装比较容易就不在这">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/3746916-39344a0eff10fee3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/01/test5/"/>
+
+
+
+
+
+  <title>从零开始使用webpack构建vuejs开发项目 | DIVINER BLOG</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DIVINER BLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-首页">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-标签">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-归类">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            归类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-时间线">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            时间线
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/01/test5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DIVINER">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DIVINER BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从零开始使用webpack构建vuejs开发项目</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-01T18:43:22+08:00">
+                2018-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue2-0开发过程中遇到的坑/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue2.0开发过程中遇到的坑</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+          
+            <span>&nbsp; | &nbsp;
+              <span id="busuanzi_value_page_pv" ></span>次阅读
+            </span>    
+          
+
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>很多人在vue的官网学习完之后，往往要开始构建第一个项目时不知道到从何下手，本文的目的就是带领你一步一步使用webpack工具构建出完整的vuejs开发项目的目录</p>
+<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><ul>
+<li>你已经了解vue的基础知识，尝试过使用vue-cli官方脚手架搭建项目。</li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>要使用npm命令就需要先安装node.js, npm是随node.js安装的，所以需要先安装node.js，因为node.js安装比较容易就不在这里演示，<br>这里给个传送门：node.js安装下载地址：<a href="http://nodejs.cn/download/" target="_blank" rel="noopener">http://nodejs.cn/download/</a><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 检查node.js是否已经安装，有则显示版本号</span><br><span class="line">DIVINER@DESKTOP<span class="number">-41E2</span>SAA MINGW64 ~</span><br><span class="line">$ node -v</span><br><span class="line">v8<span class="number">.9</span><span class="number">.4</span></span><br><span class="line"># 检查npm的版本号</span><br><span class="line">DIVINER@DESKTOP<span class="number">-41E2</span>SAA MINGW64 ~</span><br><span class="line">$ npm -v</span><br><span class="line"><span class="number">5.6</span><span class="number">.0</span></span><br></pre></td></tr></table></figure></p>
+<p>一般，我们还会安装淘宝镜像cnpm，因为在墙内，有时候使用npm安装会很慢，所以需要。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 安装cnpm，并指定镜像地址</span><br><span class="line">$ npm install -g cnpm --registry=https:<span class="comment">//registry.npm.taobao.org</span></span><br></pre></td></tr></table></figure></p>
+<p>vue脚手架的安装<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#命令行工具安装 vue-cli</span><br><span class="line">npm install vue-cli -g</span><br></pre></td></tr></table></figure></p>
+<p>上述命令的就是使用npm安装vue-cli这个脚手架，-g就是全局安装，安装完毕就可以使用vue命令了<br>我们接下来就使用它的命令行工具 vue-cli 来构建项目。</p>
+<h2 id="项目搭建"><a href="#项目搭建" class="headerlink" title="项目搭建"></a>项目搭建</h2><h3 id="Step1-0-项目初始化"><a href="#Step1-0-项目初始化" class="headerlink" title="Step1.0 项目初始化"></a>Step1.0 项目初始化</h3><h4 id="建立可以运行的项目（打包工具：webpack）（指令作用介绍如下）"><a href="#建立可以运行的项目（打包工具：webpack）（指令作用介绍如下）" class="headerlink" title="建立可以运行的项目（打包工具：webpack）（指令作用介绍如下）"></a>建立可以运行的项目（打包工具：webpack）（指令作用介绍如下）</h4><p>（1）找一个盘中的一个文件夹，在里面新建vue项目<br>vue init webpack my-project     // 初始化项目<br>（2）进入my-project<br>cd my-project<br>（3）把配置文件的插件安装一遍<br>npm install                                    // 安装 项目依赖<br>（4）运行开发环境<br>npm run dev                                // 在localhost启动测试服务器<br>（5）把项目编译成可以上线的静态html css js<br>npm run build                            // 生成上线目录（部署）</p>
+<h4 id="命令行工具操作如下"><a href="#命令行工具操作如下" class="headerlink" title="命令行工具操作如下"></a>命令行工具操作如下</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"># 去到放项目的文件地址</span><br><span class="line">DIVINER@DESKTOP<span class="number">-41E2</span>SAA MINGW64 /f/Project/vue</span><br><span class="line"># 创建基于webpack模板的项目，名称为 my-project</span><br><span class="line">$ vue init webpack my-project</span><br><span class="line"></span><br><span class="line">  A newer version <span class="keyword">of</span> vue-cli is available.</span><br><span class="line"></span><br><span class="line">  latest:    <span class="number">2.9</span><span class="number">.3</span></span><br><span class="line">  installed: <span class="number">2.9</span><span class="number">.2</span></span><br><span class="line"></span><br><span class="line">? Project name (my-project)     <span class="comment">// 直接回车 （项目名称可修改可不修改）</span></span><br><span class="line">? Project name my-project</span><br><span class="line">? Project description (A Vue.js project)  <span class="comment">// 直接回车 （描述）</span></span><br><span class="line">? Project description A Vue.js project</span><br><span class="line">? Author (linhaoran &lt;<span class="number">1476589247</span>@qq.com&gt;)  <span class="comment">// 直接回车 （作者）</span></span><br><span class="line">? Author linhaoran &lt;<span class="number">1476589247</span>@qq.com&gt;</span><br><span class="line">? Vue build (Use arrow keys)              <span class="comment">// 直接回车</span></span><br><span class="line">? Vue build standalone</span><br><span class="line">? Install vue-router? (Y/n) y             <span class="comment">// 是否安装路由 （我选择y）</span></span><br><span class="line">? Install vue-router? Yes</span><br><span class="line">? Use ESLint to lint your code? (Y/n) n   <span class="comment">// 是否使用ESLint检查代码（如果新手的话选择no）</span></span><br><span class="line">? Use ESLint to lint your code? No</span><br><span class="line">? <span class="built_in">Set</span> up unit tests (Y/n) n               <span class="comment">// 是否建立单元测试（如果新手的话选择no）</span></span><br><span class="line">? <span class="built_in">Set</span> up unit tests No</span><br><span class="line">? Setup e2e tests <span class="keyword">with</span> Nightwatch? (Y/n) n <span class="comment">//我选择了No（暂时不需要）</span></span><br><span class="line">? Setup e2e tests <span class="keyword">with</span> Nightwatch? No</span><br><span class="line">? Should we run <span class="string">`npm install`</span> <span class="keyword">for</span> you after the project has been created? (reco</span><br><span class="line">? Should we run <span class="string">`npm install`</span> <span class="keyword">for</span> you after the project has been created? (reco</span><br><span class="line">mmended) npm</span><br><span class="line"></span><br><span class="line">   vue-cli · Generated <span class="string">"my-project"</span>.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Project initialization finished!</span><br><span class="line"># ========================</span><br><span class="line"></span><br><span class="line">To get started:</span><br><span class="line"></span><br><span class="line">  cd my-project</span><br><span class="line">  npm run dev</span><br><span class="line"></span><br><span class="line">Documentation can be found at https:<span class="comment">//vuejs-templates.github.io/webpack</span></span><br></pre></td></tr></table></figure>
+<p>ok！操作到这里已经成功一半了，你会看到在你目录中多了一个my-project文件，接下来继续安装项目依赖并把项目运行起来<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">DIVINER@DESKTOP<span class="number">-41E2</span>SAA MINGW64 /f/Project/vue</span><br><span class="line"># 进入项目文件夹</span><br><span class="line">$ cd my-project/</span><br><span class="line"></span><br><span class="line">DIVINER@DESKTOP<span class="number">-41E2</span>SAA MINGW64 /f/Project/vue/my-project</span><br><span class="line"># 安装项目依赖</span><br><span class="line">$ npm install</span><br><span class="line">npm WARN ajv-keywords@<span class="number">3.2</span><span class="number">.0</span> requires a peer <span class="keyword">of</span> ajv@^<span class="number">6.0</span><span class="number">.0</span> but none is installed. You must install peer dependencies yourself.</span><br><span class="line">npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@<span class="number">1.2</span><span class="number">.3</span> (node_modules\fsevents):</span><br><span class="line">npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform <span class="keyword">for</span> fsevents@<span class="number">1.2</span><span class="number">.3</span>: wanted &#123;<span class="string">"os"</span>:<span class="string">"darwin"</span>,<span class="string">"arch"</span>:<span class="string">"any"</span>&#125; (current: &#123;<span class="string">"os"</span>:<span class="string">"win32"</span>,<span class="string">"arch"</span>:<span class="string">"x64"</span>&#125;)</span><br><span class="line"></span><br><span class="line">up to date <span class="keyword">in</span> <span class="number">11.006</span>s</span><br><span class="line"></span><br><span class="line">DIVINER@DESKTOP<span class="number">-41E2</span>SAA MINGW64 /f/Project/vue/my-project</span><br><span class="line"># 运行项目</span><br><span class="line">$ npm run dev</span><br><span class="line"></span><br><span class="line">&gt; my-project@<span class="number">1.0</span><span class="number">.0</span> dev F:\Project\vue\my-project</span><br><span class="line">&gt; webpack-dev-server --inline --progress --config build/webpack.dev.conf.js</span><br><span class="line"></span><br><span class="line"> I  Your application is running here: http:<span class="comment">//localhost:8080</span></span><br></pre></td></tr></table></figure></p>
+<p>到这里已经完成项目的初始化了，在浏览器查看8080端口，效果如下：<br><img src="https://upload-images.jianshu.io/upload_images/3746916-39344a0eff10fee3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="项目初始化效果图.jpg"><br>此时，项目目录结构如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># 当前项目代码结构</span><br><span class="line">my-project</span><br><span class="line">├── build                      <span class="comment">// 构建相关  </span></span><br><span class="line">├── config                     <span class="comment">// 配置相关</span></span><br><span class="line">├── node_modules               <span class="comment">// 模块安装的文件夹，第三方库，组件</span></span><br><span class="line">├── src                        <span class="comment">// 核心代码</span></span><br><span class="line">│   ├── assets                 <span class="comment">// 静态资源</span></span><br><span class="line">│   ├── components             <span class="comment">// 组件</span></span><br><span class="line">│   ├── router                 <span class="comment">// 路由</span></span><br><span class="line">│   ├── App.vue                <span class="comment">// 入口页面</span></span><br><span class="line">│   └── main.js                <span class="comment">// 入口 加载组件 初始化等</span></span><br><span class="line">├── <span class="keyword">static</span>                     <span class="comment">// 第三方不打包资源</span></span><br><span class="line">├── .babelrc                   <span class="comment">// babel-loader 配置,转换器，可以把ES6代码转ES5进行兼容等等</span></span><br><span class="line">├── .editorconfig              <span class="comment">// 代码编辑 配置项</span></span><br><span class="line">├── .gitignore                 <span class="comment">// git 忽略项</span></span><br><span class="line">├── .postcssrc.js              <span class="comment">// postcss处理文件中的各种css less sass文件</span></span><br><span class="line">├── index.html                 <span class="comment">// html模板 页面入口文件</span></span><br><span class="line">├── package-lock.json          <span class="comment">// package-lock.json</span></span><br><span class="line">├── package.json               <span class="comment">// npm包的配置文件，这里可以配置此项目用到的第三方包和运行脚本命令</span></span><br><span class="line">└── �README.md                <span class="comment">// 说明文档</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Step2-0"><a href="#Step2-0" class="headerlink" title="Step2.0"></a>Step2.0</h2><p>下面将根据开发经验对初始化项目的目录进行修改<br>为了显示方便，就只给出进行修改目录</p>
+<h3 id="src目录"><a href="#src目录" class="headerlink" title="src目录"></a>src目录</h3><p>先添加文件夹<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">├── src                        </span><br><span class="line">    ├── api                    <span class="comment">// 各模块的网络请求接口定义 （新增）</span></span><br><span class="line">    ├── assets                 <span class="comment">// js,css,img等资源目录</span></span><br><span class="line">    ├── components             <span class="comment">// 组件</span></span><br><span class="line">    │    ├──index.js           <span class="comment">// 统一注册组件到全局</span></span><br><span class="line">    │    └── ...               <span class="comment">// 各组件目录</span></span><br><span class="line">    ├── config                 <span class="comment">// 一些项目配置，如后端地址，后端图片服务器地址等等 （新增）</span></span><br><span class="line">    ├── filters                <span class="comment">// 全局过滤定义，用于像时间、金钱等的格式化过滤 （新增）</span></span><br><span class="line">    ├── router                 <span class="comment">// Vue-router的路由定义</span></span><br><span class="line">    ├── store                  <span class="comment">// vuex仓库 （新增）</span></span><br><span class="line">    │    ├── ...各模块目录</span><br><span class="line">    │    ├── state.js</span><br><span class="line">    │    ├── actions.js</span><br><span class="line">    │    ├── mutations.js</span><br><span class="line">    │    ├── getters.js</span><br><span class="line">    │    └── index.js</span><br><span class="line">    ├── styles                 <span class="comment">// 全局样式 （新增）</span></span><br><span class="line">    ├── utils                  <span class="comment">// （新增）</span></span><br><span class="line">    │    ├── index.js          <span class="comment">// 全局utils工具函数，存放全局用到的函数等</span></span><br><span class="line">    │    ├── permission.js     <span class="comment">// 全局路由守卫（拦截器）</span></span><br><span class="line">    │    ├── request.js        <span class="comment">// ajax(axios)访问封装（基础配置，请求拦截，响应拦截）</span></span><br><span class="line">    │    └── validate.js       <span class="comment">// 全局验证函数</span></span><br><span class="line">    ├── views                  <span class="comment">// 各页面目录 （新增）</span></span><br><span class="line">    ├── App.vue                <span class="comment">// 入口页面</span></span><br><span class="line">    └── main.js                <span class="comment">// 入口 加载组件 初始化等</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/从零开始使用webpack构建vuejs开发项目/" rel="tag"># 从零开始使用webpack构建vuejs开发项目</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/28/test4/" rel="next" title="关于登录验证在路由守卫处的两种处理方法">
+                <i class="fa fa-chevron-left"></i> 关于登录验证在路由守卫处的两种处理方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="DIVINER" />
+            
+              <p class="site-author-name" itemprop="name">DIVINER</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概要"><span class="nav-number">1.</span> <span class="nav-text">概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前提"><span class="nav-number">2.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">3.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目搭建"><span class="nav-number">4.</span> <span class="nav-text">项目搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Step1-0-项目初始化"><span class="nav-number">4.1.</span> <span class="nav-text">Step1.0 项目初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#建立可以运行的项目（打包工具：webpack）（指令作用介绍如下）"><span class="nav-number">4.1.1.</span> <span class="nav-text">建立可以运行的项目（打包工具：webpack）（指令作用介绍如下）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令行工具操作如下"><span class="nav-number">4.1.2.</span> <span class="nav-text">命令行工具操作如下</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step2-0"><span class="nav-number">5.</span> <span class="nav-text">Step2.0</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#src目录"><span class="nav-number">5.1.</span> <span class="nav-text">src目录</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DIVINER</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
