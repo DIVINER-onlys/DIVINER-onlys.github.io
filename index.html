@@ -1640,158 +1640,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/22/test2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="DIVINER">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="DIVINER BLOG">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/22/test2/" itemprop="url">vue2.0箭头函数中的this作用域</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-22T13:40:57+08:00">
-                2018-04-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue2-0开发过程中遇到的坑/" itemprop="url" rel="index">
-                    <span itemprop="name">Vue2.0开发过程中遇到的坑</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-          
-
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在使用vue2.0开发项目时用到axios，在axios请求之后的回调函数里的this并不指向当前的vue实例，从而导致浏览器报错</p>
-<h3 id="出错代码及结果"><a href="#出错代码及结果" class="headerlink" title="出错代码及结果"></a><span style="color:red">出错代码及结果</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mounted()&#123;</span><br><span class="line">    <span class="keyword">this</span>.home_setMoocInfo().then(<span class="function"><span class="keyword">function</span>(<span class="params">rep</span>) </span>&#123;</span><br><span class="line">    alert(<span class="keyword">this</span>)  <span class="comment">// undefined</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.course_list.length; i++) &#123;</span><br><span class="line">        <span class="keyword">var</span> imgurl = <span class="keyword">this</span>.$utils.parseURL(<span class="keyword">this</span>.course_list[i].VideoImg) <span class="comment">// course_list is undefined</span></span><br><span class="line">        <span class="keyword">this</span>.course_list[i].VideoImg = imgurl</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(rep)</span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><span style="color:red">Uncaught (in promise) TypeError: Cannot read property ‘course_list’ of undefined</span></p>
-<h3 id="使用普通函数修改后代码（正确）"><a href="#使用普通函数修改后代码（正确）" class="headerlink" title="使用普通函数修改后代码（正确）"></a><span style="color:green">使用普通函数修改后代码（正确）</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mounted()&#123;</span><br><span class="line">    <span class="keyword">var</span> _this = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">this</span>.home_setMoocInfo().then(<span class="function"><span class="keyword">function</span>(<span class="params">rep</span>) </span>&#123;              </span><br><span class="line">        alert(<span class="keyword">this</span>)  <span class="comment">//undefined</span></span><br><span class="line">        alert(_this) <span class="comment">//object</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; _this.course_list.length; i++) &#123;</span><br><span class="line">            <span class="keyword">var</span> imgurl = _this.$utils.parseURL(_this.course_list[i].VideoImg)</span><br><span class="line">            _this.course_list[i].VideoImg = imgurl</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">console</span>.log(rep)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><hr>
-<p>从以上结果可以看出，在mounted函数的this指向的是当前vue实例，而在这些函数内部使用例如axios与后台交互后<br>回调函数的内部的this并不是指向当前的vue实例，若想拿到后台回传的数据更新data里的数据，不能在回调函数中<br>直接使用this，而要在外部函数定义的变量存储的this，也就是当前vue的实例</p>
-<h3 id="使用箭头函数修改（正确）"><a href="#使用箭头函数修改（正确）" class="headerlink" title="使用箭头函数修改（正确）"></a><span style="color:blue">使用箭头函数修改（正确）</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mounted()&#123;</span><br><span class="line">    <span class="keyword">this</span>.home_setMoocInfo().then(<span class="function">(<span class="params">rep</span>) =&gt;</span> &#123;</span><br><span class="line">        alert(<span class="keyword">this</span>) <span class="comment">//object</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.course_list.length; i++) &#123;</span><br><span class="line">            <span class="keyword">var</span> imgurl = <span class="keyword">this</span>.$utils.parseURL(<span class="keyword">this</span>.course_list[i].VideoImg)</span><br><span class="line">            <span class="keyword">this</span>.course_list[i].VideoImg = imgurl</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">console</span>.log(rep)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h3><p>箭头函数相当于匿名函数，并简化了函数定义，看上去是匿名函数的一种简写，但实际上，箭头函数和匿名函数<br>有个明显的区别：箭头函数内部的this是词法作用域，由上下文确定，此时this在箭头函数中已经按照词法作用域<br>绑定了，很明显，使用箭头函数之后，箭头函数指向的函数内部的this已经绑定了外部的vue实例了</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/22/test/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1909,6 +1757,158 @@
 <h3 id="getters-js"><a href="#getters-js" class="headerlink" title="getters.js"></a>getters.js</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> getters = &#123;</span><br><span class="line">    msgGt: <span class="function"><span class="params">state</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> state.msg</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="home-——-index-js"><a href="#home-——-index-js" class="headerlink" title="home —— index.js"></a>home —— index.js</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;apifunction&#125; <span class="keyword">from</span> <span class="string">'../api/home'</span></span><br><span class="line"><span class="keyword">const</span> state = &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> mutations = &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> actions = &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> getters = &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    state,</span><br><span class="line">    getters,</span><br><span class="line">    mutations,</span><br><span class="line">    acionts</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="products-———-index-js"><a href="#products-———-index-js" class="headerlink" title="products ——— index.js"></a>products ——— index.js</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;apifunction&#125; <span class="keyword">from</span> <span class="string">'../api/home'</span></span><br><span class="line"><span class="keyword">const</span> state = &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> mutations = &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> actions = &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> getters = &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    state,</span><br><span class="line">    getters,</span><br><span class="line">    mutations,</span><br><span class="line">    acionts</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/22/test2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DIVINER">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DIVINER BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/22/test2/" itemprop="url">vue2.0箭头函数中的this作用域</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-22T13:40:57+08:00">
+                2018-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue2-0开发过程中遇到的坑/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue2.0开发过程中遇到的坑</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+          
+
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在使用vue2.0开发项目时用到axios，在axios请求之后的回调函数里的this并不指向当前的vue实例，从而导致浏览器报错</p>
+<h3 id="出错代码及结果"><a href="#出错代码及结果" class="headerlink" title="出错代码及结果"></a><span style="color:red">出错代码及结果</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mounted()&#123;</span><br><span class="line">    <span class="keyword">this</span>.home_setMoocInfo().then(<span class="function"><span class="keyword">function</span>(<span class="params">rep</span>) </span>&#123;</span><br><span class="line">    alert(<span class="keyword">this</span>)  <span class="comment">// undefined</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.course_list.length; i++) &#123;</span><br><span class="line">        <span class="keyword">var</span> imgurl = <span class="keyword">this</span>.$utils.parseURL(<span class="keyword">this</span>.course_list[i].VideoImg) <span class="comment">// course_list is undefined</span></span><br><span class="line">        <span class="keyword">this</span>.course_list[i].VideoImg = imgurl</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(rep)</span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><span style="color:red">Uncaught (in promise) TypeError: Cannot read property ‘course_list’ of undefined</span></p>
+<h3 id="使用普通函数修改后代码（正确）"><a href="#使用普通函数修改后代码（正确）" class="headerlink" title="使用普通函数修改后代码（正确）"></a><span style="color:green">使用普通函数修改后代码（正确）</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mounted()&#123;</span><br><span class="line">    <span class="keyword">var</span> _this = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">this</span>.home_setMoocInfo().then(<span class="function"><span class="keyword">function</span>(<span class="params">rep</span>) </span>&#123;              </span><br><span class="line">        alert(<span class="keyword">this</span>)  <span class="comment">//undefined</span></span><br><span class="line">        alert(_this) <span class="comment">//object</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; _this.course_list.length; i++) &#123;</span><br><span class="line">            <span class="keyword">var</span> imgurl = _this.$utils.parseURL(_this.course_list[i].VideoImg)</span><br><span class="line">            _this.course_list[i].VideoImg = imgurl</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">console</span>.log(rep)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><hr>
+<p>从以上结果可以看出，在mounted函数的this指向的是当前vue实例，而在这些函数内部使用例如axios与后台交互后<br>回调函数的内部的this并不是指向当前的vue实例，若想拿到后台回传的数据更新data里的数据，不能在回调函数中<br>直接使用this，而要在外部函数定义的变量存储的this，也就是当前vue的实例</p>
+<h3 id="使用箭头函数修改（正确）"><a href="#使用箭头函数修改（正确）" class="headerlink" title="使用箭头函数修改（正确）"></a><span style="color:blue">使用箭头函数修改（正确）</span></h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mounted()&#123;</span><br><span class="line">    <span class="keyword">this</span>.home_setMoocInfo().then(<span class="function">(<span class="params">rep</span>) =&gt;</span> &#123;</span><br><span class="line">        alert(<span class="keyword">this</span>) <span class="comment">//object</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.course_list.length; i++) &#123;</span><br><span class="line">            <span class="keyword">var</span> imgurl = <span class="keyword">this</span>.$utils.parseURL(<span class="keyword">this</span>.course_list[i].VideoImg)</span><br><span class="line">            <span class="keyword">this</span>.course_list[i].VideoImg = imgurl</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">console</span>.log(rep)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h3><p>箭头函数相当于匿名函数，并简化了函数定义，看上去是匿名函数的一种简写，但实际上，箭头函数和匿名函数<br>有个明显的区别：箭头函数内部的this是词法作用域，由上下文确定，此时this在箭头函数中已经按照词法作用域<br>绑定了，很明显，使用箭头函数之后，箭头函数指向的函数内部的this已经绑定了外部的vue实例了</p>
 
           
         
